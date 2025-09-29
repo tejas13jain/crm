@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
     default: "employee" 
   },
   createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", default: null },
-  // optional: to link to a client entity (if you later create Client model)
+
   client: { type: mongoose.Schema.Types.ObjectId, ref: "User", default: null },
 }, { timestamps: true });
 

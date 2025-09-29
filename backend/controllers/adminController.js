@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs");
 exports.createEmployee = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
-    // req.user contains id and role
+
     const createdBy = req.user.id; // admin's id
 
     if (!name || !email || !password) return res.status(400).json({ msg: "Missing" });
@@ -27,6 +27,19 @@ exports.listEmployeesForAdmin = async (req, res) => {
     const adminId = req.user.id;
     const employees = await User.find({ createdBy: adminId }).select("-password");
     res.json(employees);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
+exports.getAllUsers = async (req, res) => {
+ try {
+    const users = await User.find().select("-password"); // exclude password
+    if (!users || users.length === 0) {
+      return res.status(200).json({ msg: "No users found" });
+    }
+    res.json(users);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

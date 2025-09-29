@@ -8,14 +8,13 @@ exports.verifyToken = (req, res, next) => {
   const token = header.split(" ")[1];
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded; // { id, role, iat, exp }
+    req.user = decoded; 
     next();
   } catch (err) {
     return res.status(401).json({ msg: "Invalid token" });
   }
 };
 
-// higher order role-check middleware
 exports.requireRole = (roles = []) => (req, res, next) => {
   if (!req.user) return res.status(401).json({ msg: "No user" });
   if (!Array.isArray(roles)) roles = [roles];
